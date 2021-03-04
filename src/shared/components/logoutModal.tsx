@@ -2,17 +2,17 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../context/auth';
 import $ from 'jquery';
 
-export const ConfirmLogoutModal: React.FC = () => {
+export const LogoutModal: React.FC = () => {
   const { logout } = useContext(AuthContext);
 
-  const handleLogout = () => {
+  const handleConfirm = () => {
     logout();
 
-    $('#confirmLogoutModal').modal('hide');
+    $('#logoutModal').modal('hide');
   }
 
   return (
-    <div className="modal fade" id="confirmLogoutModal" tabIndex={-1} aria-hidden="true">
+    <div className="modal fade" id="logoutModal" tabIndex={-1} aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-body">
@@ -27,7 +27,7 @@ export const ConfirmLogoutModal: React.FC = () => {
             <button
               type="button"
               className="btn btn-success"
-              onClick={handleLogout}
+              onClick={handleConfirm}
             >
               Yes
             </button>

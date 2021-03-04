@@ -1,12 +1,13 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Product } from '../shared/interfaces/product.interface';
-import { getProductsRequest } from '../services/api';
+import { deleteProductRequest, getProductsRequest } from '../services/api';
 import { PaginationContext } from './pagination';
 
 interface ProductContextData {
   products: Product[],
   getProducts(link: string | null): void,
+  deleteProduct(productId: number): void,
 }
 
 export const ProductContext = createContext<ProductContextData>(
@@ -57,6 +58,16 @@ export const ProductProvider: React.FC = ({ children }) => {
     }
   }, [setPagination]);
 
+  const deleteProduct = useCallback(async (productId) => {
+    try {
+      await deleteProductRequest(productId);
+
+      await getProducts(null);
+    } catch (err) {
+      console.log('Fail to delete product');
+    }
+  }, [getProducts]);
+
   useEffect(() => {
     getProducts(null);
   }, [getProducts]);
@@ -66,6 +77,7 @@ export const ProductProvider: React.FC = ({ children }) => {
       value={{
         products,
         getProducts,
+        deleteProduct,
       }}
     >
       {children}

@@ -50,3 +50,9 @@ export async function getProductsRequest(
 
   return response.data;
 }
+
+export async function deleteProductRequest(
+  productId: number,
+): Promise<void> {
+  await axios.delete(apiBaseUrl + `/api/products/${productId}`);
+}
