@@ -9,6 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
+axios.defaults.headers = {
+  'Accept': 'application/json',
+}
 
 toast.configure({
   position: 'top-right',

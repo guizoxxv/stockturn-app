@@ -6,7 +6,7 @@ import Route from './Route';
 
 const Routes: React.FC = () => (
   <Switch>
-    <Route path="/login" exact component={Login} />
+    <Route path="/login" exact component={Login} isGuest />
     <Route path="/" exact component={Home} isPrivate />
   </Switch>
 );

@@ -8,30 +8,45 @@ import { AuthContext } from '../context/auth';
 
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
+  isGuest?: boolean;
   component: React.ComponentType;
 }
 
 const Route: React.FC<RouteProps> = ({
   isPrivate = false,
+  isGuest = false,
   component: Component,
   ...rest
 }) => {
-  const { authData } = useContext(AuthContext);
+  const { logged } = useContext(AuthContext);
 
   return (
     <ReactDOMRoute
       {...rest}
       render={({ location }) => {
-        return isPrivate === Boolean(authData.email) ? (
-          <Component />
-        ) : (
-          <Redirect
-            to={{
-              pathname: isPrivate ? '/login' : '/',
-              state: { from: location },
-            }}
-          />
-        );
+        if (isGuest && logged) {
+          return (
+            <Redirect
+              to={{
+                pathname: '/',
+                state: { from: location },
+              }}
+            />
+          );
+        }
+
+        if (isPrivate && !logged) {
+          return (
+            <Redirect
+              to={{
+                pathname: 'login',
+                state: { from: location },
+              }}
+            />
+          );
+        }
+
+        return <Component />;
       }}
     />
   );
