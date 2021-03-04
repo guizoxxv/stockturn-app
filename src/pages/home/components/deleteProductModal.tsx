@@ -18,7 +18,7 @@ export const DeleteProductModal: React.FC<DeleteProductModalData> = ({ product }
 
   return (
     <div className="modal fade" id="deleteProductModal" tabIndex={-1} aria-hidden="true">
-      <div className="modal-dialog">
+      <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-body">
             <div className="text-center">

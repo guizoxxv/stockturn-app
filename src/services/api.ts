@@ -6,6 +6,8 @@ import { AuthData } from '../shared/interfaces/authData.interface';
 import * as qs from 'query-string';
 import { GetProductsResponse } from '../shared/interfaces/getProductsResponse.interface';
 import { GetProductsQuery } from '../shared/interfaces/getProductsQuery.interface';
+import { Product } from '../shared/interfaces/product.interface';
+import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 
 export async function loginRequest(
   { email, password }: LoginCredentials
@@ -46,7 +48,7 @@ export async function getProductsRequest(
 
   const queryString = queryParams ? '?' + qs.stringify(queryParams) : "";
 
-  const response = await axios.get(apiBaseUrl + `/api/products${queryString}`);
+  const response = await axios.get<GetProductsResponse>(apiBaseUrl + `/api/products${queryString}`);
 
   return response.data;
 }
@@ -54,5 +56,13 @@ export async function getProductsRequest(
 export async function deleteProductRequest(
   productId: number,
 ): Promise<void> {
-  await axios.delete(apiBaseUrl + `/api/products/${productId}`);
+  await axios.delete<void>(apiBaseUrl + `/api/products/${productId}`);
+}
+
+export async function createProductRequest(
+  product: ProductCreate,
+): Promise<Product> {
+  const response = await axios.post<Product>(apiBaseUrl + `/api/products`, product);
+
+  return response.data;
 }

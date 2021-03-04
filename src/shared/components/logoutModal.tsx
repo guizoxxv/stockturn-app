@@ -13,7 +13,7 @@ export const LogoutModal: React.FC = () => {
 
   return (
     <div className="modal fade" id="logoutModal" tabIndex={-1} aria-hidden="true">
-      <div className="modal-dialog">
+      <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-body">
             <div className="text-center">

@@ -6,7 +6,7 @@ export interface Product {
   price: number;
   sku: string;
   stock: number;
-  stockTimeline: StockTimeline[]
+  stockTimeline?: StockTimeline[]
   created_at: string;
   updated_at: string;
 }

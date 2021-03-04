@@ -25,7 +25,7 @@ export const ProductsTable: React.FC = () => {
 
   return (
     <>
-    <table className="table table-bordered table-striped table-hover">
+    <table className="table table-bordered table-striped table-hover table-responsive-sm">
       <thead>
         <tr className="text-center">
           <th scope="col">Id</th>

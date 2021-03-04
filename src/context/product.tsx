@@ -1,13 +1,15 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Product } from '../shared/interfaces/product.interface';
-import { deleteProductRequest, getProductsRequest } from '../services/api';
+import { createProductRequest, deleteProductRequest, getProductsRequest } from '../services/api';
 import { PaginationContext } from './pagination';
+import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 
 interface ProductContextData {
   products: Product[],
   getProducts(link: string | null): void,
   deleteProduct(productId: number): void,
+  createProduct(product: ProductCreate): void,
 }
 
 export const ProductContext = createContext<ProductContextData>(
@@ -68,6 +70,16 @@ export const ProductProvider: React.FC = ({ children }) => {
     }
   }, [getProducts]);
 
+  const createProduct = useCallback(async (product: ProductCreate) => {
+    try {
+      await createProductRequest(product);
+
+      await getProducts(null);
+    } catch (err) {
+      console.log('Fail to create product');
+    }
+  }, [getProducts]);
+
   useEffect(() => {
     getProducts(null);
   }, [getProducts]);
@@ -78,6 +90,7 @@ export const ProductProvider: React.FC = ({ children }) => {
         products,
         getProducts,
         deleteProduct,
+        createProduct,
       }}
     >
       {children}

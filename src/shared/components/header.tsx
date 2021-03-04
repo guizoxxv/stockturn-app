@@ -9,6 +9,7 @@ export const Header: React.FC = () => {
   const { authData } = useContext(AuthContext);
 
   return (
+    <>
     <header className="mb-4">
       <nav className="navbar navbar-expand-sm navbar-light bg-white shadow-sm">
         <div className="container">
@@ -34,7 +35,7 @@ export const Header: React.FC = () => {
                   <button
                     className="dropdown-item"
                     data-toggle="modal"
-                    data-target="#confirmLogoutModal"
+                    data-target="#logoutModal"
                   >
                     Logout
                   </button>
@@ -44,7 +45,8 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </nav>
-      <LogoutModal />
     </header>
+    <LogoutModal />
+    </>
   );
 }

@@ -11,8 +11,8 @@ import { faBarcode } from '@fortawesome/free-solid-svg-icons';
 interface FormInputs extends LoginCredentials, ValidationErrors {};
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [validationErrors, setValidationErrors] = useState<FormInputs | null>(null);
   const { login } = useContext(AuthContext);
   
