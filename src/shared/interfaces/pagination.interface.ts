@@ -1,8 +1,6 @@
-import { Product } from './product.interface';
-import { Link } from './Link.interface';
+import { Link } from "./link.interface";
 
-export interface GetProductsResponse {
-  data: Product[],
+export interface Pagination {
   current_page: number;
   first_page_url: string;
   from: number;

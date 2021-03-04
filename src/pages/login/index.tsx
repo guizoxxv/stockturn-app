@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { LoginCredentials } from '../../interfaces/loginCredentials.interface';
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import { LoginCredentials } from '../../shared/interfaces/loginCredentials.interface';
 import { getValidationErrors, ValidationErrors } from '../../utils/validationErrors';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../context/auth';
 import { flashToast } from '../../utils/flash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBarcode } from '@fortawesome/free-solid-svg-icons';
 
 interface FormInputs extends LoginCredentials, ValidationErrors {};
 
@@ -18,7 +20,9 @@ const Login: React.FC = () => {
     flashToast();
   }, []);
 
-  async function handleLogin(): Promise<void> {
+  async function handleLogin(e: FormEvent<HTMLFormElement>): Promise<void> {
+    e.preventDefault();
+
     try {
       const schema = Yup.object().shape({
         email: Yup.string().email().required(),
@@ -65,7 +69,10 @@ const Login: React.FC = () => {
   
   return (
     <>
-    <h2 className="text-center p-2 mb-0">Products App</h2>
+    <div className="text-center mb-0">
+      <FontAwesomeIcon icon={faBarcode} size="5x" />
+      <h5>Products App</h5>
+    </div>
     <div
       className="d-flex align-items-center justify-content-center"
       style={{
@@ -75,7 +82,7 @@ const Login: React.FC = () => {
         transform: 'translate(-50%, -50%)',
       }}
     >
-      <div className="card">
+      <form className="card" onSubmit={handleLogin}>
         <div className="card-body">
           <div className="form-group mb-3">
             <label htmlFor="email" className="mb-0">
@@ -113,15 +120,14 @@ const Login: React.FC = () => {
           </div>
           <div className="text-center">
             <button
-              type="button"
+              type="submit"
               className="btn btn-primary"
-              onClick={() => handleLogin()}
             >
               Login
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
     </>
   );

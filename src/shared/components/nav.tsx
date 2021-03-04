@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../context/auth';
+import { AuthContext } from '../../context/auth';
 import { Link } from 'react-router-dom';
 import { ConfirmLogoutModal } from './confirmLogoutModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,8 +1,8 @@
 
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { getUserData, loginRequest, logoutRequest } from '../services/api';
-import { LoginCredentials } from '../interfaces/loginCredentials.interface';
-import { AuthData } from './interfaces/authData.interface';
+import { LoginCredentials } from '../shared/interfaces/loginCredentials.interface';
+import { AuthData } from '../shared/interfaces/authData.interface';
 import { useCookies } from 'react-cookie';
 import { appDomain } from '../config';
 

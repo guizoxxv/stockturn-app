@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { LoginCredentials } from '../interfaces/loginCredentials.interface';
+import { LoginCredentials } from '../shared/interfaces/loginCredentials.interface';
 import { apiBaseUrl } from '../config';
-import { GetUserResponse } from './interfaces/getUserResponse.interface';
-import { AuthData } from '../context/interfaces/authData.interface';
+import { GetUserResponse } from '../shared/components/getUserResponse.interface';
+import { AuthData } from '../shared/interfaces/authData.interface';
 import * as qs from 'query-string';
-import { GetProductsResponse } from '../interfaces/getProductsResponse.interface';
+import { GetProductsResponse } from '../shared/interfaces/getProductsResponse.interface';
+import { GetProductsQuery } from '../shared/interfaces/getProductsQuery.interface';
 
 export async function loginRequest(
   { email, password }: LoginCredentials
@@ -33,7 +34,16 @@ export async function logoutRequest(): Promise<void> {
   await axios.post(apiBaseUrl + '/logout');
 }
 
-export async function getProductsRequest(queryParams?: any): Promise<GetProductsResponse> {
+export async function getProductsRequest(
+  link: string|null,
+  queryParams?: GetProductsQuery,
+): Promise<GetProductsResponse> {
+  if (link) {
+    const response = await axios.get(link);
+
+    return response.data;
+  }
+
   const queryString = queryParams ? '?' + qs.stringify(queryParams) : "";
 
   const response = await axios.get(apiBaseUrl + `/api/products${queryString}`);
