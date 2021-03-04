@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { ProductProvider } from './context/product';
+import { PaginationProvider } from './context/pagination';
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers = {
@@ -26,7 +28,11 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes />
+          <PaginationProvider>
+            <ProductProvider>
+              <Routes />
+            </ProductProvider>
+          </PaginationProvider>
       </AuthProvider>
     </BrowserRouter>
   );
