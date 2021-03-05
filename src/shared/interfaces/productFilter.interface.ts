@@ -4,10 +4,10 @@ export interface ProductFilter {
   sort?: string;
   name?: string;
   sku?: string;
-  fromPrice?: number;
-  toPrice?: number;
-  fromStock?: number;
-  toStock?: number;
+  fromPrice?: string;
+  toPrice?: string;
+  fromStock?: string;
+  toStock?: string;
   fromDate?: string;
   toDate?: string;
 }

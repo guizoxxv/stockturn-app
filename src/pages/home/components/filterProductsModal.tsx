@@ -10,6 +10,12 @@ export const FilterProductsModal: React.FC = () => {
   const { filters, setFilters } = useContext(ProductContext);
   const [name, setName] = useState<string>(filters.name || '');
   const [sku, setSku] = useState<string>(filters.sku || '');
+  const [fromPrice, setFromPrice] = useState<string>(filters.fromPrice || '');
+  const [toPrice, setToPrice] = useState<string>(filters.toPrice || '');
+  const [fromStock, setFromStock] = useState<string>(filters.fromStock || '');
+  const [toStock, setToStock] = useState<string>(filters.toStock || '');
+  const [fromDate, setFromDate] = useState<string>(filters.fromDate || '');
+  const [toDate, setToDate] = useState<string>(filters.toDate || '');
   const [validationErrors, setValidationErrors] = useState<FormInputs | null>(null);
 
   useEffect(() => {
@@ -32,12 +38,66 @@ export const FilterProductsModal: React.FC = () => {
     setSku(value);
   }
 
+  function setFromPriceHandler(value: string) {
+    if (validationErrors?.fromPrice) {
+      setValidationErrors({ ...validationErrors, fromPrice: '' });
+    }
+
+    setFromPrice(value);
+  }
+
+  function setToPriceHandler(value: string) {
+    if (validationErrors?.toPrice) {
+      setValidationErrors({ ...validationErrors, toPrice: '' });
+    }
+
+    setToPrice(value);
+  }
+
+  function setFromStockHandler(value: string) {
+    if (validationErrors?.fromStock) {
+      setValidationErrors({ ...validationErrors, fromStock: '' });
+    }
+
+    setFromStock(value);
+  }
+
+  function setToStockHandler(value: string) {
+    if (validationErrors?.toStock) {
+      setValidationErrors({ ...validationErrors, toStock: '' });
+    }
+
+    setToStock(value);
+  }
+
+  function setFromDateHandler(value: string) {
+    if (validationErrors?.fromDate) {
+      setValidationErrors({ ...validationErrors, fromDate: '' });
+    }
+
+    setFromDate(value);
+  }
+
+  function setToDateHandler(value: string) {
+    if (validationErrors?.toDate) {
+      setValidationErrors({ ...validationErrors, toDate: '' });
+    }
+
+    setToDate(value);
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
     await setFilters({
-      name: name || undefined,
-      sku: sku || undefined,
+      ...name && { name },
+      ...sku && { sku },
+      ...fromPrice && { fromPrice },
+      ...toPrice && { toPrice },
+      ...fromStock && { fromStock },
+      ...toStock && { toStock },
+      ...fromDate && { fromDate },
+      ...toDate && { toDate },
     });
 
     $('#filterProductModal').modal('hide');
@@ -47,6 +107,12 @@ export const FilterProductsModal: React.FC = () => {
     setFilters({});
     setName('');
     setSku('');
+    setFromPrice('');
+    setToPrice('');
+    setFromStock('');
+    setToStock('');
+    setFromDate('');
+    setToDate('');
   }
 
   return (
@@ -91,6 +157,84 @@ export const FilterProductsModal: React.FC = () => {
                     <strong>{validationErrors.sku}</strong>
                   </span>
                 )}
+              </div>
+              <div className="form-row mb-3">
+                <div className="col">
+                  <label htmlFor="fromPrice" className="mb-0">
+                    <small>From price</small>
+                  </label>
+                  <input
+                    id="fromPrice"
+                    className="form-control" 
+                    type="number"
+                    value={fromPrice}
+                    onChange={e => setFromPriceHandler(e.target.value)}
+                  />
+                </div>
+                <div className="col">
+                  <label htmlFor="toPrice" className="mb-0">
+                    <small>To price</small>
+                  </label>
+                  <input
+                    id="toPrice"
+                    className="form-control"
+                    type="number"
+                    value={toPrice}
+                    onChange={e => setToPriceHandler(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="form-row mb-3">
+                <div className="col">
+                  <label htmlFor="fromStock" className="mb-0">
+                    <small>From stock</small>
+                  </label>
+                  <input
+                    id="fromStock"
+                    className="form-control" 
+                    type="number"
+                    value={fromStock}
+                    onChange={e => setFromStockHandler(e.target.value)}
+                  />
+                </div>
+                <div className="col">
+                  <label htmlFor="toStock" className="mb-0">
+                    <small>To stock</small>
+                  </label>
+                  <input
+                    id="toStock"
+                    className="form-control"
+                    type="number"
+                    value={toStock}
+                    onChange={e => setToStockHandler(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="form-row mb-3">
+                <div className="col">
+                  <label htmlFor="fromDate" className="mb-0">
+                    <small>From date</small>
+                  </label>
+                  <input
+                    id="fromDate"
+                    className="form-control" 
+                    type="date"
+                    value={fromDate}
+                    onChange={e => setFromDateHandler(e.target.value)}
+                  />
+                </div>
+                <div className="col">
+                  <label htmlFor="toDate" className="mb-0">
+                    <small>To date</small>
+                  </label>
+                  <input
+                    id="toDate"
+                    className="form-control"
+                    type="date"
+                    value={toDate}
+                    onChange={e => setToDateHandler(e.target.value)}
+                  />
+                </div>
               </div>
               <div className="d-flex align-items-center justify-content-around form-group mb-0">
                 <button type="button" className="btn btn-danger" data-dismiss="modal">

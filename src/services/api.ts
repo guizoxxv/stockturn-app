@@ -39,14 +39,7 @@ export async function logoutRequest(): Promise<void> {
 
 export async function getProductsRequest(
   filters: ProductFilter,
-  link?: string|null,
 ): Promise<GetProductsResponse> {
-  if (link) {
-    const response = await axios.get(link);
-
-    return response.data;
-  }
-
   const queryString = filters ? '?' + qs.stringify(filters) : '';
 
   const response = await axios.get<GetProductsResponse>(apiBaseUrl + `/api/products${queryString}`);

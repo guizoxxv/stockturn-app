@@ -43,7 +43,7 @@ export const CreateProductModal: React.FC = () => {
     await createProduct({
       name,
       price: parseFloat(price),
-      stock: parseInt(stock),
+      stock: parseInt(stock) || undefined,
     });
 
     $('#createProductModal').modal('hide');

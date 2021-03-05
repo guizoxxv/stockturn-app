@@ -39,9 +39,9 @@ export const ProductProvider: React.FC = ({ children }) => {
   const [filters, setFilters] = useState<ProductFilter>({} as ProductFilter);
   const { setPagination } = useContext(PaginationContext);
 
-  const getProducts = useCallback(async (link?: string | null): Promise<void> => {
+  const getProducts = useCallback(async (): Promise<void> => {
     try {
-      const response = await getProductsRequest(filters, link);
+      const response = await getProductsRequest(filters);
 
       const {
         data,
@@ -83,7 +83,7 @@ export const ProductProvider: React.FC = ({ children }) => {
     try {
       await deleteProductRequest(productId);
 
-      await getProducts(null);
+      await getProducts();
     } catch (err) {
       console.log('Fail to delete product');
     }

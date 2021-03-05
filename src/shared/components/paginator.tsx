@@ -4,11 +4,14 @@ import { ProductContext } from '../../context/product';
 
 export const Paginator: React.FC = () => {
   const { pagination } = useContext(PaginationContext);
-  const { setFilters, getProducts } = useContext(ProductContext);
+  const { filters, setFilters } = useContext(ProductContext);
 
-  const handleFetchPageData = useCallback(async (link: string|null) => {
-    await getProducts(link);
-  }, [getProducts]);
+  const handleSetPage = useCallback(async (page: number) => {
+    setFilters({
+      ...filters,
+      page,
+    });
+  }, [filters, setFilters]);
 
   return (
     <div className="d-flex align-items-center justify-content-center">
@@ -18,16 +21,17 @@ export const Paginator: React.FC = () => {
             <button
               className="page-link"
               aria-label="Previous"
-              onClick={() => handleFetchPageData(pagination.first_page_url)}
+              onClick={() => handleSetPage(1)}
             >
               <span aria-hidden="true">&laquo;</span>
             </button>
           </li>
-          {pagination?.links?.map((link, index) => (
+          {pagination?.links?.filter((link => parseInt(link.label)))
+            .map((link, index) => (
             <li key={index} className={`page-item ${link.active ? 'active' : ''} ${link.url ? '' : 'disabled'}`}>
               <button
                 className="page-link"
-                onClick={() => handleFetchPageData(link.url)}
+                onClick={() => handleSetPage(parseInt(link.label))}
                 dangerouslySetInnerHTML={{ __html: link.label }}
               >
               </button>
@@ -37,7 +41,7 @@ export const Paginator: React.FC = () => {
             <button
               className="page-link"
               aria-label="Next"
-              onClick={() => handleFetchPageData(pagination.last_page_url)}
+              onClick={() => handleSetPage(pagination.last_page)}
             >
               <span aria-hidden="true">&raquo;</span>
             </button>

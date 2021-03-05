@@ -1,4 +1,4 @@
-import { Link } from "./link.interface";
+import { Link } from './link.interface';
 
 export interface Pagination {
   current_page: number;
