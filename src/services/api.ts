@@ -8,6 +8,7 @@ import { GetProductsResponse } from '../shared/interfaces/getProductsResponse.in
 import { GetProductsQuery } from '../shared/interfaces/getProductsQuery.interface';
 import { Product } from '../shared/interfaces/product.interface';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
+import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
 
 export async function loginRequest(
   { email, password }: LoginCredentials
@@ -63,6 +64,14 @@ export async function createProductRequest(
   product: ProductCreate,
 ): Promise<Product> {
   const response = await axios.post<Product>(apiBaseUrl + `/api/products`, product);
+
+  return response.data;
+}
+
+export async function editProductRequest(
+  product: ProductUpdate,
+): Promise<Product> {
+  const response = await axios.put<Product>(apiBaseUrl + `/api/products/${product.id}`, product);
 
   return response.data;
 }

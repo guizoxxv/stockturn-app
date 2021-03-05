@@ -1,15 +1,17 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Product } from '../shared/interfaces/product.interface';
-import { createProductRequest, deleteProductRequest, getProductsRequest } from '../services/api';
+import { createProductRequest, deleteProductRequest, editProductRequest, getProductsRequest } from '../services/api';
 import { PaginationContext } from './pagination';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
+import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
 
 interface ProductContextData {
   products: Product[],
   getProducts(link: string | null): void,
   deleteProduct(productId: number): void,
   createProduct(product: ProductCreate): void,
+  editProduct(product: ProductUpdate): void,
 }
 
 export const ProductContext = createContext<ProductContextData>(
@@ -80,6 +82,16 @@ export const ProductProvider: React.FC = ({ children }) => {
     }
   }, [getProducts]);
 
+  const editProduct = useCallback(async (product: ProductUpdate) => {
+    try {
+      await editProductRequest(product);
+
+      await getProducts(null);
+    } catch (err) {
+      console.log('Fail to edit product');
+    }
+  }, [getProducts]);
+
   useEffect(() => {
     getProducts(null);
   }, [getProducts]);
@@ -91,6 +103,7 @@ export const ProductProvider: React.FC = ({ children }) => {
         getProducts,
         deleteProduct,
         createProduct,
+        editProduct,
       }}
     >
       {children}

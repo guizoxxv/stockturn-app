@@ -1,17 +1,28 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useContext, useEffect, useState } from 'react';
 import { ValidationErrors } from '../../../utils/validationErrors';
-import { CreateProductData } from '../../../shared/interfaces/createProductData.interface';
+import { EditProductData } from '../../../shared/interfaces/editProductData.interface'
 import { ProductContext } from '../../../context/product';
 import $ from 'jquery';
+import { Product } from '../../../shared/interfaces/product.interface';
 
-interface FormInputs extends CreateProductData, ValidationErrors { };
+interface FormInputs extends EditProductData, ValidationErrors { };
 
-export const CreateProductModal: React.FC = () => {
-  const { createProduct } = useContext(ProductContext);
+interface EditProductModalData {
+  product: Product,
+}
+
+export const EditProductModal: React.FC<EditProductModalData> = ({ product }) => {
+  const { editProduct } = useContext(ProductContext);
   const [name, setName] = useState<string>('');
   const [price, setPrice] = useState<string>('');
   const [stock, setStock] = useState<string>('');
   const [validationErrors, setValidationErrors] = useState<FormInputs | null>(null);
+
+  useEffect(() => {
+    product.name && setName(product.name);
+    product.price && setPrice(product.price.toString());
+    product.stock && setStock(product.stock.toString());
+  }, [product]);
 
   function setNameHandler(value: string) {
     if (validationErrors?.name) {
@@ -40,13 +51,14 @@ export const CreateProductModal: React.FC = () => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
-    await createProduct({
+    await editProduct({
+      id: product.id,
       name,
       price: parseFloat(price),
       stock: parseInt(stock),
     });
 
-    $('#createProductModal').modal('hide');
+    $('#editProductModal').modal('hide');
 
     clearInputs();
   }
@@ -58,11 +70,11 @@ export const CreateProductModal: React.FC = () => {
   }
 
   return (
-    <div className="modal fade" id="createProductModal" tabIndex={-1} aria-labelledby="createProductModalLabel" aria-hidden="true">
+    <div className="modal fade" id="editProductModal" tabIndex={-1} aria-labelledby="editProductModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="createProductModalLabel">Create Product</h5>
+            <h5 className="modal-title" id="editProductModalLabel">Edit Product</h5>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -71,7 +83,7 @@ export const CreateProductModal: React.FC = () => {
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name" className="mb-0">
-                  <small>Name<span className="text-danger">*</span></small>
+                  <small>Name</small>
                 </label>
                 <input
                   id="name"
@@ -88,7 +100,7 @@ export const CreateProductModal: React.FC = () => {
               </div>
               <div className="form-group">
                 <label htmlFor="price" className="mb-0">
-                  <small>Price<span className="text-danger">*</span></small>
+                  <small>Price</small>
                 </label>
                 <input
                   id="price"
@@ -128,7 +140,7 @@ export const CreateProductModal: React.FC = () => {
                   type="submit"
                   className="btn btn-success"
                 >
-                  Create
+                  Update
                 </button>
               </div>
             </form>

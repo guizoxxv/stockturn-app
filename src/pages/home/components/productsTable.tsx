@@ -6,6 +6,7 @@ import { ProductContext } from '../../../context/product';
 import $ from 'jquery';
 import { ViewProductModal } from './viewProductModal';
 import { DeleteProductModal } from './deleteProductModal';
+import { EditProductModal } from './editProductModal';
 
 export const ProductsTable: React.FC = () => {
   const { products } = useContext(ProductContext);
@@ -21,6 +22,12 @@ export const ProductsTable: React.FC = () => {
     setProduct(product);
 
     $('#deleteProductModal').modal('show');
+  }, []);
+
+  const handleEditProduct = useCallback((product: Product) => {
+    setProduct(product);
+
+    $('#editProductModal').modal('show');
   }, []);
 
   return (
@@ -50,7 +57,11 @@ export const ProductsTable: React.FC = () => {
               >
                 <FontAwesomeIcon icon={faEye} size="1x" />
               </button>
-              <button className="btn btn-sm btn-secondary m-1" title="Edit">
+              <button
+                className="btn btn-sm btn-secondary m-1"
+                title="Edit"
+                onClick={() => handleEditProduct(product)}
+              >
                 <FontAwesomeIcon icon={faPencilAlt} size="1x" />
               </button>
               <button
@@ -67,6 +78,7 @@ export const ProductsTable: React.FC = () => {
     </table>
     <ViewProductModal product={product} />
     <DeleteProductModal product={product} />
+    <EditProductModal product={product} />
     </>
   );
 }
