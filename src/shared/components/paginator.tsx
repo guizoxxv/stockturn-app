@@ -4,7 +4,7 @@ import { ProductContext } from '../../context/product';
 
 export const Paginator: React.FC = () => {
   const { pagination } = useContext(PaginationContext);
-  const { getProducts } = useContext(ProductContext);
+  const { setFilters, getProducts } = useContext(ProductContext);
 
   const handleFetchPageData = useCallback(async (link: string|null) => {
     await getProducts(link);

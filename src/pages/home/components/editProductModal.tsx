@@ -5,7 +5,7 @@ import { ProductContext } from '../../../context/product';
 import $ from 'jquery';
 import { Product } from '../../../shared/interfaces/product.interface';
 
-interface FormInputs extends EditProductData, ValidationErrors { };
+interface FormInputs extends EditProductData, ValidationErrors {};
 
 interface EditProductModalData {
   product: Product,

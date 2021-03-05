@@ -5,10 +5,10 @@ import { GetUserResponse } from '../shared/components/getUserResponse.interface'
 import { AuthData } from '../shared/interfaces/authData.interface';
 import * as qs from 'query-string';
 import { GetProductsResponse } from '../shared/interfaces/getProductsResponse.interface';
-import { GetProductsQuery } from '../shared/interfaces/getProductsQuery.interface';
 import { Product } from '../shared/interfaces/product.interface';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
+import { ProductFilter } from '../shared/interfaces/productFilter.interface';
 
 export async function loginRequest(
   { email, password }: LoginCredentials
@@ -38,8 +38,8 @@ export async function logoutRequest(): Promise<void> {
 }
 
 export async function getProductsRequest(
-  link: string|null,
-  queryParams?: GetProductsQuery,
+  filters: ProductFilter,
+  link?: string|null,
 ): Promise<GetProductsResponse> {
   if (link) {
     const response = await axios.get(link);
@@ -47,7 +47,7 @@ export async function getProductsRequest(
     return response.data;
   }
 
-  const queryString = queryParams ? '?' + qs.stringify(queryParams) : "";
+  const queryString = filters ? '?' + qs.stringify(filters) : '';
 
   const response = await axios.get<GetProductsResponse>(apiBaseUrl + `/api/products${queryString}`);
 

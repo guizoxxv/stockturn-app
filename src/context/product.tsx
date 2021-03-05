@@ -1,14 +1,30 @@
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import { Product } from '../shared/interfaces/product.interface';
-import { createProductRequest, deleteProductRequest, editProductRequest, getProductsRequest } from '../services/api';
+import {
+  createProductRequest,
+  deleteProductRequest,
+  editProductRequest,
+  getProductsRequest
+} from '../services/api';
 import { PaginationContext } from './pagination';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
+import { ProductFilter } from '../shared/interfaces/productFilter.interface';
 
 interface ProductContextData {
   products: Product[],
-  getProducts(link: string | null): void,
+  filters: ProductFilter,
+  setFilters: Dispatch<SetStateAction<ProductFilter>>,
+  getProducts(link?: string | null): void,
   deleteProduct(productId: number): void,
   createProduct(product: ProductCreate): void,
   editProduct(product: ProductUpdate): void,
@@ -20,11 +36,12 @@ export const ProductContext = createContext<ProductContextData>(
 
 export const ProductProvider: React.FC = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [filters, setFilters] = useState<ProductFilter>({} as ProductFilter);
   const { setPagination } = useContext(PaginationContext);
 
-  const getProducts = useCallback(async (link: string | null): Promise<void> => {
+  const getProducts = useCallback(async (link?: string | null): Promise<void> => {
     try {
-      const response = await getProductsRequest(link);
+      const response = await getProductsRequest(filters, link);
 
       const {
         data,
@@ -60,7 +77,7 @@ export const ProductProvider: React.FC = ({ children }) => {
     } catch (err) {
       console.log('Fail to get products');
     }
-  }, [setPagination]);
+  }, [filters, setPagination]);
 
   const deleteProduct = useCallback(async (productId) => {
     try {
@@ -76,7 +93,7 @@ export const ProductProvider: React.FC = ({ children }) => {
     try {
       await createProductRequest(product);
 
-      await getProducts(null);
+      await getProducts();
     } catch (err) {
       console.log('Fail to create product');
     }
@@ -86,20 +103,22 @@ export const ProductProvider: React.FC = ({ children }) => {
     try {
       await editProductRequest(product);
 
-      await getProducts(null);
+      await getProducts();
     } catch (err) {
       console.log('Fail to edit product');
     }
   }, [getProducts]);
 
   useEffect(() => {
-    getProducts(null);
+    getProducts();
   }, [getProducts]);
 
   return (
     <ProductContext.Provider
       value={{
         products,
+        filters,
+        setFilters,
         getProducts,
         deleteProduct,
         createProduct,
