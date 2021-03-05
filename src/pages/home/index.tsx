@@ -8,6 +8,7 @@ import $ from 'jquery';
 import { CreateProductModal } from './components/createProductModal';
 import { FilterProductsModal } from './components/filterProductsModal';
 import { ProductContext } from '../../context/product';
+import { BulkUpsertProductsModal } from './components/bulkUpsertProductsModal';
 
 export const Home: React.FC = () => {
   const { filters } = useContext(ProductContext);
@@ -18,6 +19,10 @@ export const Home: React.FC = () => {
 
   const handleFilterProducts = useCallback(() => {
     $('#filterProductModal').modal('show');
+  }, []);
+
+  const handleBulkUpsertProducts = useCallback(() => {
+    $('#bulkUpsertProductsModal').modal('show');
   }, []);
 
   const getFiltersCount = useCallback((): number => {
@@ -46,12 +51,21 @@ export const Home: React.FC = () => {
             <FontAwesomeIcon icon={faPlus} size="1x" className="mr-1" />
             Create
           </button>
+          <button
+            className="btn btn-success m-1"
+            onClick={handleBulkUpsertProducts}
+          >
+            <FontAwesomeIcon icon={faPlus} size="1x" className="mr-1" />
+            <FontAwesomeIcon icon={faPlus} size="1x" className="mr-1" />
+            Create
+          </button>
         </div>
       </div>
       <ProductsTable />
       <Paginator />
     </main>
     <CreateProductModal />
+    <BulkUpsertProductsModal />
     <FilterProductsModal />
     </>
   );

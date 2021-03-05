@@ -32,10 +32,10 @@ export const ViewProductModal: React.FC<ViewProductModalData> = ({ product }) =>
             <span className="font-weight-bold">Stock:</span> <span>{product.stock}</span>
           </div>
           <div>
-            <span className="font-weight-bold">Creation date:</span> <span>{product.created_at}</span>
+            <span className="font-weight-bold">Creation date:</span> <span>{new Date(product.created_at).toLocaleString()}</span>
           </div>
           <div>
-            <span className="font-weight-bold">Last update date:</span> <span>{product.updated_at}</span>
+            <span className="font-weight-bold">Last update date:</span> <span>{new Date(product.updated_at).toLocaleString()}</span>
           </div>
         </div>
       </div>

@@ -37,8 +37,9 @@ export const ProductsTable: React.FC = () => {
         <tr className="text-center">
           <th scope="col">Id</th>
           <th scope="col">Name</th>
-          <th scope="col">Price</th>
+          <th scope="col">Price ($)</th>
           <th scope="col">Stock</th>
+          <th scope="col">Creation Date</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -49,6 +50,7 @@ export const ProductsTable: React.FC = () => {
             <td>{product.name}</td>
             <td>{product.price}</td>
             <td>{product.stock}</td>
+            <td>{new Date(product.created_at).toLocaleDateString()}</td>
             <td>
               <button
                 className="btn btn-sm btn-primary m-1"

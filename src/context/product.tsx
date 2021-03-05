@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import { Product } from '../shared/interfaces/product.interface';
 import {
+  bulkUpsertProductsRequest,
   createProductRequest,
   deleteProductRequest,
   editProductRequest,
@@ -19,6 +20,7 @@ import { PaginationContext } from './pagination';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
 import { ProductFilter } from '../shared/interfaces/productFilter.interface';
+import { ProductUpsert } from '../shared/interfaces/ProductUpsert.interface';
 
 interface ProductContextData {
   products: Product[],
@@ -28,6 +30,7 @@ interface ProductContextData {
   deleteProduct(productId: number): void,
   createProduct(product: ProductCreate): void,
   editProduct(product: ProductUpdate): void,
+  bulkUpsertProducts(products: ProductUpsert[]): void,
 }
 
 export const ProductContext = createContext<ProductContextData>(
@@ -109,6 +112,16 @@ export const ProductProvider: React.FC = ({ children }) => {
     }
   }, [getProducts]);
 
+  const bulkUpsertProducts = useCallback(async (products: ProductUpsert[]) => {
+    try {
+      await bulkUpsertProductsRequest(products);
+
+      await getProducts();
+    } catch (err) {
+      console.log('Fail to bulk upsert products');
+    }
+  }, [getProducts]);
+
   useEffect(() => {
     getProducts();
   }, [getProducts]);
@@ -123,6 +136,7 @@ export const ProductProvider: React.FC = ({ children }) => {
         deleteProduct,
         createProduct,
         editProduct,
+        bulkUpsertProducts,
       }}
     >
       {children}
