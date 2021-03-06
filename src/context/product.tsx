@@ -10,17 +10,16 @@ import React, {
 } from 'react';
 import { Product } from '../shared/interfaces/product.interface';
 import {
-  bulkUpsertProductsRequest,
   createProductRequest,
   deleteProductRequest,
   editProductRequest,
-  getProductsRequest
+  getProductsRequest,
+  uploadProductsCsvRequest
 } from '../services/api';
 import { PaginationContext } from './pagination';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
 import { ProductFilter } from '../shared/interfaces/productFilter.interface';
-import { ProductUpsert } from '../shared/interfaces/ProductUpsert.interface';
 
 interface ProductContextData {
   products: Product[],
@@ -30,7 +29,7 @@ interface ProductContextData {
   deleteProduct(productId: number): void,
   createProduct(product: ProductCreate): void,
   editProduct(product: ProductUpdate): void,
-  bulkUpsertProducts(products: ProductUpsert[]): void,
+  uploadProductsCsv(file: any): void,
 }
 
 export const ProductContext = createContext<ProductContextData>(
@@ -92,7 +91,7 @@ export const ProductProvider: React.FC = ({ children }) => {
     }
   }, [getProducts]);
 
-  const createProduct = useCallback(async (product: ProductCreate) => {
+  const createProduct = useCallback(async (product: ProductCreate): Promise<void> => {
     try {
       await createProductRequest(product);
 
@@ -102,7 +101,7 @@ export const ProductProvider: React.FC = ({ children }) => {
     }
   }, [getProducts]);
 
-  const editProduct = useCallback(async (product: ProductUpdate) => {
+  const editProduct = useCallback(async (product: ProductUpdate): Promise<void> => {
     try {
       await editProductRequest(product);
 
@@ -112,15 +111,13 @@ export const ProductProvider: React.FC = ({ children }) => {
     }
   }, [getProducts]);
 
-  const bulkUpsertProducts = useCallback(async (products: ProductUpsert[]) => {
+  const uploadProductsCsv = useCallback(async (data: FormData): Promise<void> => {
     try {
-      await bulkUpsertProductsRequest(products);
-
-      await getProducts();
+      await uploadProductsCsvRequest(data);
     } catch (err) {
-      console.log('Fail to bulk upsert products');
+      console.log('Fail to upload file');
     }
-  }, [getProducts]);
+  }, []);
 
   useEffect(() => {
     getProducts();
@@ -136,7 +133,7 @@ export const ProductProvider: React.FC = ({ children }) => {
         deleteProduct,
         createProduct,
         editProduct,
-        bulkUpsertProducts,
+        uploadProductsCsv,
       }}
     >
       {children}

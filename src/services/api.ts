@@ -9,7 +9,6 @@ import { Product } from '../shared/interfaces/product.interface';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
 import { ProductFilter } from '../shared/interfaces/productFilter.interface';
-import { ProductUpsert } from '../shared/interfaces/ProductUpsert.interface';
 
 export async function loginRequest(
   { email, password }: LoginCredentials
@@ -57,7 +56,7 @@ export async function deleteProductRequest(
 export async function createProductRequest(
   product: ProductCreate,
 ): Promise<Product> {
-  const response = await axios.post<Product>(apiBaseUrl + `/api/products`, product);
+  const response = await axios.post<Product>(apiBaseUrl + '/api/products', product);
 
   return response.data;
 }
@@ -70,10 +69,9 @@ export async function editProductRequest(
   return response.data;
 }
 
-export async function bulkUpsertProductsRequest(
-  products: ProductUpsert[],
-): Promise<Product[]> {
-  const response = await axios.post<Product[]>(apiBaseUrl + `/api/products`, products);
-
-  return response.data;
+export async function uploadProductsCsvRequest(
+  data: FormData,
+): Promise<void> {
+  const response = await axios.post(apiBaseUrl + '/api/products/actions/upload-csv', data);
+  console.log(response);
 }
