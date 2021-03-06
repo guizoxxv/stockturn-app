@@ -42,11 +42,10 @@ export const AuthProvider: React.FC = ({ children }) => {
 
           clearCookies();
           
+          setLogged(false);
           setAuthData({} as AuthData);
         });
     }
-
-    setLogged(false);
   }, [clearCookies, cookies]);
   
   const login = useCallback(async (credentials: LoginCredentials) => {

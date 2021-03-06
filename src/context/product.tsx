@@ -5,7 +5,6 @@ import React, {
   SetStateAction,
   useCallback,
   useContext,
-  useEffect,
   useState
 } from 'react';
 import { Product } from '../shared/interfaces/product.interface';
@@ -118,10 +117,6 @@ export const ProductProvider: React.FC = ({ children }) => {
       console.log('Fail to upload file');
     }
   }, []);
-
-  useEffect(() => {
-    getProducts();
-  }, [getProducts]);
 
   return (
     <ProductContext.Provider

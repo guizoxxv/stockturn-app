@@ -14,8 +14,6 @@ export const UploadProductsCsvModal: React.FC = () => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
-    console.log('file on handleSubmit:', file);
-
     const data = new FormData();
 
     data.append('file', file as Blob);
@@ -37,6 +35,8 @@ export const UploadProductsCsvModal: React.FC = () => {
 
   function clearInputs(): void {
     setFile(undefined);
+
+    $('#file').val('');
   }
 
   return (

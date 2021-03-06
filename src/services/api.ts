@@ -9,6 +9,7 @@ import { Product } from '../shared/interfaces/product.interface';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
 import { ProductFilter } from '../shared/interfaces/productFilter.interface';
+import { Upload } from '../shared/interfaces/upload.interface';
 
 export async function loginRequest(
   { email, password }: LoginCredentials
@@ -71,7 +72,8 @@ export async function editProductRequest(
 
 export async function uploadProductsCsvRequest(
   data: FormData,
-): Promise<void> {
-  const response = await axios.post(apiBaseUrl + '/api/products/actions/upload-csv', data);
-  console.log(response);
+): Promise<Upload> {
+  const response = await axios.post(apiBaseUrl + '/api/uploads', data);
+
+  return response.data;
 }

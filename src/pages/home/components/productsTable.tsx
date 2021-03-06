@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { faEye, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Product } from '../../../shared/interfaces/product.interface';
@@ -9,8 +9,12 @@ import { DeleteProductModal } from './deleteProductModal';
 import { EditProductModal } from './editProductModal';
 
 export const ProductsTable: React.FC = () => {
-  const { products } = useContext(ProductContext);
+  const { products, getProducts } = useContext(ProductContext);
   const [product, setProduct] = useState<Product>({} as Product);
+
+  useEffect(() => {
+    getProducts();
+  }, [getProducts]);
 
   const handleViewProduct = useCallback((product: Product) => {
     setProduct(product);
