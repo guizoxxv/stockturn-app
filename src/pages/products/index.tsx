@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react'
 import { Header } from '../../shared/components/header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter, faPlus, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ProductsTable } from './components/productsTable';
 import { Paginator } from '../../shared/components/paginator';
 import $ from 'jquery';
@@ -10,7 +10,7 @@ import { FilterProductsModal } from './components/filterProductsModal';
 import { ProductContext } from '../../context/product';
 import { UploadProductsCsvModal } from './components/uploadProductsCsvModal';
 
-export const Home: React.FC = () => {
+export const ProductsPage: React.FC = () => {
   const { filters } = useContext(ProductContext);
 
   const handleCreateProduct = useCallback(() => {
@@ -19,10 +19,6 @@ export const Home: React.FC = () => {
 
   const handleFilterProducts = useCallback(() => {
     $('#filterProductModal').modal('show');
-  }, []);
-
-  const handleUploadProductsCsv = useCallback(() => {
-    $('#uploadProductsCsvModal').modal('show');
   }, []);
 
   const getFiltersCount = useCallback((): number => {
@@ -42,7 +38,7 @@ export const Home: React.FC = () => {
           >
             <FontAwesomeIcon icon={faFilter} size="1x" className="mr-1" />
             <span className="mr-1">Filter</span>
-              <span className="badge bg-secondary">{getFiltersCount()}</span>
+            <span className="badge bg-secondary">{getFiltersCount()}</span>
           </button>
           <button
             className="btn btn-success m-1"
@@ -50,13 +46,6 @@ export const Home: React.FC = () => {
           >
             <FontAwesomeIcon icon={faPlus} size="1x" className="mr-1" />
             Create
-          </button>
-          <button
-            className="btn btn-secondary m-1"
-            onClick={handleUploadProductsCsv}
-          >
-            <FontAwesomeIcon icon={faUpload} size="1x" className="mr-1" />
-            Upload
           </button>
         </div>
       </div>

@@ -13,7 +13,6 @@ import {
   deleteProductRequest,
   editProductRequest,
   getProductsRequest,
-  uploadProductsCsvRequest
 } from '../services/api';
 import { PaginationContext } from './pagination';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
@@ -24,11 +23,10 @@ interface ProductContextData {
   products: Product[],
   filters: ProductFilter,
   setFilters: Dispatch<SetStateAction<ProductFilter>>,
-  getProducts(link?: string | null): void,
+  getProducts(): void,
   deleteProduct(productId: number): void,
   createProduct(product: ProductCreate): void,
   editProduct(product: ProductUpdate): void,
-  uploadProductsCsv(file: any): void,
 }
 
 export const ProductContext = createContext<ProductContextData>(
@@ -110,14 +108,6 @@ export const ProductProvider: React.FC = ({ children }) => {
     }
   }, [getProducts]);
 
-  const uploadProductsCsv = useCallback(async (data: FormData): Promise<void> => {
-    try {
-      await uploadProductsCsvRequest(data);
-    } catch (err) {
-      console.log('Fail to upload file');
-    }
-  }, []);
-
   return (
     <ProductContext.Provider
       value={{
@@ -128,7 +118,6 @@ export const ProductProvider: React.FC = ({ children }) => {
         deleteProduct,
         createProduct,
         editProduct,
-        uploadProductsCsv,
       }}
     >
       {children}

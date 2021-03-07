@@ -4,9 +4,11 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/auth';
 import { LogoutModal } from './logoutModal';
+import { useLocation } from 'react-router-dom';
 
 export const Header: React.FC = () => {
   const { authData } = useContext(AuthContext);
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -20,6 +22,18 @@ export const Header: React.FC = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto">
+              <li className={`nav-item ${pathname === '/' ? 'active' : ''}`}>
+                <Link className="nav-link" to="/">
+                  Products
+                </Link>
+              </li>
+              <li className={`nav-item ${pathname === '/uploads' ? 'active' : ''}`}>
+                <Link className="nav-link" to="/uploads">
+                  Uploads
+                </Link>
+              </li>
+            </ul>
             <ul className="navbar-nav ml-auto">
               <li className="nav-item dropdown">
                 <button

@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { ProductProvider } from './context/product';
 import { PaginationProvider } from './context/pagination';
+import { UploadProvider } from './context/upload';
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers = {
@@ -30,7 +31,9 @@ const App: React.FC = () => {
       <AuthProvider>
           <PaginationProvider>
             <ProductProvider>
-              <Routes />
+              <UploadProvider>
+                <Routes />
+              </UploadProvider>
             </ProductProvider>
           </PaginationProvider>
       </AuthProvider>

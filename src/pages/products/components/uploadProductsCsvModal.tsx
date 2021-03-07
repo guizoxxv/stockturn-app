@@ -1,13 +1,13 @@
 import React, { FormEvent, useContext, useState } from 'react';
 import { ValidationErrors } from '../../../utils/validationErrors';
-import { ProductContext } from '../../../context/product';
+import { UploadContext } from '../../../context/upload';
 import $ from 'jquery';
-import { UploadProductsCsvData } from '../../../shared/interfaces/uploadProductsCsvData.interface';
+import { UploadCsvData } from '../../../shared/interfaces/uploadCsvData.interface';
 
-interface FormInputs extends UploadProductsCsvData, ValidationErrors { };
+interface FormInputs extends UploadCsvData, ValidationErrors { };
 
 export const UploadProductsCsvModal: React.FC = () => {
-  const { uploadProductsCsv } = useContext(ProductContext);
+  const { uploadCsv } = useContext(UploadContext);
   const [file, setFile] = useState<File|undefined>(undefined);
   const [validationErrors, setValidationErrors] = useState<FormInputs | null>(null);
 
@@ -18,7 +18,7 @@ export const UploadProductsCsvModal: React.FC = () => {
 
     data.append('file', file as Blob);
 
-    await uploadProductsCsv(data);
+    await uploadCsv(data);
 
     $('#uploadProductsCsvModal').modal('hide');
 

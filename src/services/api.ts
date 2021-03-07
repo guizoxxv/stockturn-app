@@ -10,6 +10,8 @@ import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
 import { ProductFilter } from '../shared/interfaces/productFilter.interface';
 import { Upload } from '../shared/interfaces/upload.interface';
+import { UploadFilter } from '../shared/interfaces/uploadFilter.interface';
+import { GetUploadsResponse } from '../shared/interfaces/getUploadsResponse.interface';
 
 export async function loginRequest(
   { email, password }: LoginCredentials
@@ -70,7 +72,17 @@ export async function editProductRequest(
   return response.data;
 }
 
-export async function uploadProductsCsvRequest(
+export async function getUploadsRequest(
+  filters: UploadFilter,
+): Promise<GetUploadsResponse> {
+  const queryString = filters ? '?' + qs.stringify(filters) : '';
+
+  const response = await axios.get<GetUploadsResponse>(apiBaseUrl + `/api/uploads${queryString}`);
+
+  return response.data;
+}
+
+export async function uploadCsvRequest(
   data: FormData,
 ): Promise<Upload> {
   const response = await axios.post(apiBaseUrl + '/api/uploads', data);
