@@ -3,11 +3,13 @@ import { ValidationErrors } from '../../../utils/validationErrors';
 import { UploadContext } from '../../../context/upload';
 import $ from 'jquery';
 import { UploadCsvData } from '../../../shared/interfaces/uploadCsvData.interface';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 interface FormInputs extends UploadCsvData, ValidationErrors { };
 
 export const UploadCsvModal: React.FC = () => {
-  const { uploadCsv } = useContext(UploadContext);
+  const { uploadCsv, donwnloadSample } = useContext(UploadContext);
   const [file, setFile] = useState<File | undefined>(undefined);
   const [validationErrors, setValidationErrors] = useState<FormInputs | null>(null);
 
@@ -31,6 +33,10 @@ export const UploadCsvModal: React.FC = () => {
     }
 
     setFile(value);
+  }
+
+  async function handleDownloadSample() {
+    await donwnloadSample();
   }
 
   function clearInputs(): void {
@@ -63,6 +69,14 @@ export const UploadCsvModal: React.FC = () => {
                   File must be .csv &lt; 2Mb size
                 </small>
               </div>
+              <button
+                type="button"
+                className="btn btn-link mb-3"
+                onClick={handleDownloadSample}
+              >
+                <FontAwesomeIcon icon={faDownload} size="1x" className="mr-1" />
+                Download sample
+              </button>
               <div className="d-flex align-items-center justify-content-around form-group mb-0">
                 <button type="button" className="btn btn-danger" data-dismiss="modal">
                   Cancel

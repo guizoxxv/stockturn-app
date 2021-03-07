@@ -10,11 +10,12 @@ import React, {
 import { Upload } from '../shared/interfaces/upload.interface';
 import {
   getUploadsRequest,
-  uploadCsvRequest
+  uploadCsvRequest,
 } from '../services/api';
 import { PaginationContext } from './pagination';
 import { UploadFilter } from '../shared/interfaces/uploadFilter.interface';
 import { toast } from 'react-toastify';
+import { apiBaseUrl } from '../config';
 
 interface UploadContextData {
   uploads: Upload[],
@@ -22,6 +23,7 @@ interface UploadContextData {
   setFilters: Dispatch<SetStateAction<UploadFilter>>,
   getUploads(): void,
   uploadCsv(file: any): void,
+  donwnloadSample(): void,
 }
 
 export const UploadContext = createContext<UploadContextData>(
@@ -83,6 +85,16 @@ export const UploadProvider: React.FC = ({ children }) => {
     }
   }, []);
 
+  const donwnloadSample = useCallback(async (): Promise<void> => {
+    try {
+      window.open(apiBaseUrl + '/api/uploads/actions/get-sample-csv');
+
+      toast.info('Sample downloaded');
+    } catch (err) {
+      toast.error('Fail to download sample');
+    }
+  }, []);
+
   return (
     <UploadContext.Provider
       value={{
@@ -91,6 +103,7 @@ export const UploadProvider: React.FC = ({ children }) => {
         setFilters,
         getUploads,
         uploadCsv,
+        donwnloadSample,
       }}
     >
       {children}
