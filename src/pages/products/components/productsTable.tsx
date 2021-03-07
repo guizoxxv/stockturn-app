@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { faEye, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faEye, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Product } from '../../../shared/interfaces/product.interface';
 import { ProductContext } from '../../../context/product';
@@ -7,6 +7,7 @@ import $ from 'jquery';
 import { ViewProductModal } from './viewProductModal';
 import { DeleteProductModal } from './deleteProductModal';
 import { EditProductModal } from './editProductModal';
+import { ViewStockTimelineModal } from './viewStockTimelineModal';
 
 export const ProductsTable: React.FC = () => {
   const { products, getProducts } = useContext(ProductContext);
@@ -32,6 +33,12 @@ export const ProductsTable: React.FC = () => {
     setProduct(product);
 
     $('#editProductModal').modal('show');
+  }, []);
+
+  const handleViewStockTimeline = useCallback((product: Product) => {
+    setProduct(product);
+
+    $('#viewStockTimelineModal').modal('show');
   }, []);
 
   return (
@@ -64,6 +71,13 @@ export const ProductsTable: React.FC = () => {
                 <FontAwesomeIcon icon={faEye} size="1x" />
               </button>
               <button
+                className="btn btn-sm btn-warning m-1"
+                title="View stock timeline"
+                onClick={() => handleViewStockTimeline(product)}
+              >
+                <FontAwesomeIcon icon={faChartLine} size="1x" />
+              </button>
+              <button
                 className="btn btn-sm btn-secondary m-1"
                 title="Edit"
                 onClick={() => handleEditProduct(product)}
@@ -85,6 +99,7 @@ export const ProductsTable: React.FC = () => {
     <ViewProductModal product={product} />
     <DeleteProductModal product={product} />
     <EditProductModal product={product} />
+    <ViewStockTimelineModal product={product} />
     </>
   );
 }
