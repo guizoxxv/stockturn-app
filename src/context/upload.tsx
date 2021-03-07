@@ -14,6 +14,7 @@ import {
 } from '../services/api';
 import { PaginationContext } from './pagination';
 import { UploadFilter } from '../shared/interfaces/uploadFilter.interface';
+import { toast } from 'react-toastify';
 
 interface UploadContextData {
   uploads: Upload[],
@@ -68,15 +69,17 @@ export const UploadProvider: React.FC = ({ children }) => {
         total,
       });
     } catch (err) {
-      console.log('Fail to get uploads');
+      toast.error('Fail to get uploads');
     }
   }, [filters, setPagination]);
 
   const uploadCsv = useCallback(async (data: FormData): Promise<void> => {
     try {
       await uploadCsvRequest(data);
+
+      toast.info('File uploaded');
     } catch (err) {
-      console.log('Fail to upload file');
+      toast.error('Fail to upload file');
     }
   }, []);
 

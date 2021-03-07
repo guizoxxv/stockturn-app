@@ -46,7 +46,7 @@ export const Login: React.FC = () => {
 
         setValidationErrors(validationErrors as FormInputs);
       } else {
-        toast.error('Login failed');
+        toast.error('Invalid form data');
       }
     }
   }

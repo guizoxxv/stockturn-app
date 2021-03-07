@@ -1,8 +1,10 @@
 import React, { FormEvent, useContext, useEffect, useState } from 'react';
 import { ProductContext } from '../../../context/product';
 import { ProductFilter } from '../../../shared/interfaces/productFilter.interface';
-import { ValidationErrors } from '../../../utils/validationErrors';
+import { getValidationErrors, ValidationErrors } from '../../../utils/validationErrors';
 import $ from 'jquery';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
 interface FormInputs extends ProductFilter, ValidationErrors { };
 
@@ -89,18 +91,68 @@ export const FilterProductsModal: React.FC = () => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
-    await setFilters({
-      ...name && { name },
-      ...sku && { sku },
-      ...fromPrice && { fromPrice },
-      ...toPrice && { toPrice },
-      ...fromStock && { fromStock },
-      ...toStock && { toStock },
-      ...fromDate && { fromDate },
-      ...toDate && { toDate },
-    });
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().notRequired(),
+        sku: Yup.string().notRequired(),
+        fromPrice: Yup.number()
+          .transform(v => isNaN(v) ? undefined : v)
+          .notRequired()
+          .positive(),
+        toPrice: Yup.number()
+          .transform(v => isNaN(v) ? undefined : v)
+          .notRequired()
+          .positive(),
+        fromStock: Yup.number()
+          .transform(v => isNaN(v) ? undefined : v)
+          .notRequired()
+          .positive(),
+        toStock: Yup.number()
+          .transform(v => isNaN(v) ? undefined : v)
+          .notRequired()
+          .positive(),
+        fromDate: Yup.date()
+          .transform(v => isNaN(Date.parse(v)) ? undefined : v)
+          .notRequired(),
+        toDate: Yup.date()
+          .transform(v => isNaN(Date.parse(v)) ? undefined : v)
+          .notRequired(),
+      });
 
-    $('#filterProductModal').modal('hide');
+      await schema.validate({
+        name,
+        sku,
+        fromPrice,
+        toPrice,
+        fromStock,
+        toStock,
+        fromDate,
+        toDate,
+      }, {
+        abortEarly: false,
+      });
+
+      await setFilters({
+        ...name && { name },
+        ...sku && { sku },
+        ...fromPrice && { fromPrice },
+        ...toPrice && { toPrice },
+        ...fromStock && { fromStock },
+        ...toStock && { toStock },
+        ...fromDate && { fromDate },
+        ...toDate && { toDate },
+      });
+
+      $('#filterProductModal').modal('hide');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = getValidationErrors(err);
+
+        setValidationErrors(validationErrors as FormInputs);
+      } else {
+        toast.error('Invalid form data');
+      }
+    }
   }
 
   async function handleClearInputs(): Promise<void> {
@@ -158,7 +210,7 @@ export const FilterProductsModal: React.FC = () => {
                   </span>
                 )}
               </div>
-              <div className="form-row mb-3">
+              <div className="form-row mb-3 is-invalid">
                 <div className="col">
                   <label htmlFor="fromPrice" className="mb-0">
                     <small>From price</small>
@@ -170,6 +222,11 @@ export const FilterProductsModal: React.FC = () => {
                     value={fromPrice}
                     onChange={e => setFromPriceHandler(e.target.value)}
                   />
+                  {validationErrors?.fromPrice && (
+                    <span className="invalid-feedback d-inline-block" role="alert">
+                      <strong>{validationErrors.fromPrice}</strong>
+                    </span>
+                  )}
                 </div>
                 <div className="col">
                   <label htmlFor="toPrice" className="mb-0">
@@ -182,6 +239,11 @@ export const FilterProductsModal: React.FC = () => {
                     value={toPrice}
                     onChange={e => setToPriceHandler(e.target.value)}
                   />
+                  {validationErrors?.toPrice && (
+                    <span className="invalid-feedback d-inline-block" role="alert">
+                      <strong>{validationErrors.toPrice}</strong>
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="form-row mb-3">
@@ -196,6 +258,11 @@ export const FilterProductsModal: React.FC = () => {
                     value={fromStock}
                     onChange={e => setFromStockHandler(e.target.value)}
                   />
+                  {validationErrors?.fromStock && (
+                    <span className="invalid-feedback d-inline-block" role="alert">
+                      <strong>{validationErrors.fromStock}</strong>
+                    </span>
+                  )}
                 </div>
                 <div className="col">
                   <label htmlFor="toStock" className="mb-0">
@@ -208,6 +275,11 @@ export const FilterProductsModal: React.FC = () => {
                     value={toStock}
                     onChange={e => setToStockHandler(e.target.value)}
                   />
+                  {validationErrors?.toStock && (
+                    <span className="invalid-feedback d-inline-block" role="alert">
+                      <strong>{validationErrors.toStock}</strong>
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="form-row mb-3">
@@ -222,6 +294,11 @@ export const FilterProductsModal: React.FC = () => {
                     value={fromDate}
                     onChange={e => setFromDateHandler(e.target.value)}
                   />
+                  {validationErrors?.fromDate && (
+                    <span className="invalid-feedback d-inline-block" role="alert">
+                      <strong>{validationErrors.fromDate}</strong>
+                    </span>
+                  )}
                 </div>
                 <div className="col">
                   <label htmlFor="toDate" className="mb-0">
@@ -234,6 +311,11 @@ export const FilterProductsModal: React.FC = () => {
                     value={toDate}
                     onChange={e => setToDateHandler(e.target.value)}
                   />
+                  {validationErrors?.toDate && (
+                    <span className="invalid-feedback d-inline-block" role="alert">
+                      <strong>{validationErrors.toDate}</strong>
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="d-flex align-items-center justify-content-around form-group mb-0">

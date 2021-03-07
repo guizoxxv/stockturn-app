@@ -18,6 +18,7 @@ import { PaginationContext } from './pagination';
 import { ProductCreate } from '../shared/interfaces/productCreate.interface';
 import { ProductUpdate } from '../shared/interfaces/productUpdate.interface';
 import { ProductFilter } from '../shared/interfaces/productFilter.interface';
+import { toast } from 'react-toastify';
 
 interface ProductContextData {
   products: Product[],
@@ -74,7 +75,7 @@ export const ProductProvider: React.FC = ({ children }) => {
         total,
       })
     } catch (err) {
-      console.log('Fail to get products');
+      toast.error('Fail to get products');
     }
   }, [filters, setPagination]);
 
@@ -83,8 +84,10 @@ export const ProductProvider: React.FC = ({ children }) => {
       await deleteProductRequest(productId);
 
       await getProducts();
+
+      toast.success('Product deleted');
     } catch (err) {
-      console.log('Fail to delete product');
+      toast.error('Fail to delete product');
     }
   }, [getProducts]);
 
@@ -93,8 +96,10 @@ export const ProductProvider: React.FC = ({ children }) => {
       await createProductRequest(product);
 
       await getProducts();
+
+      toast.success('Product created');
     } catch (err) {
-      console.log('Fail to create product');
+      toast.error('Fail to create product');
     }
   }, [getProducts]);
 
@@ -103,8 +108,10 @@ export const ProductProvider: React.FC = ({ children }) => {
       await editProductRequest(product);
 
       await getProducts();
+
+      toast.success('Product updated');
     } catch (err) {
-      console.log('Fail to edit product');
+      toast.error('Fail to update product');
     }
   }, [getProducts]);
 

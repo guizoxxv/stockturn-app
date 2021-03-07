@@ -1,8 +1,10 @@
 import React, { FormEvent, useContext, useState } from 'react';
-import { ValidationErrors } from '../../../utils/validationErrors';
+import { getValidationErrors, ValidationErrors } from '../../../utils/validationErrors';
 import { CreateProductData } from '../../../shared/interfaces/createProductData.interface';
 import { ProductContext } from '../../../context/product';
 import $ from 'jquery';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
 interface FormInputs extends CreateProductData, ValidationErrors { };
 
@@ -40,15 +42,46 @@ export const CreateProductModal: React.FC = () => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
-    await createProduct({
-      name,
-      price: parseFloat(price),
-      stock: parseInt(stock) || undefined,
-    });
+    try {
+      const schema = Yup.object().shape({
+        name: Yup.string().required(),
+        price: Yup.number()
+          .transform(v => isNaN(v) ? undefined : v)
+          .required()
+          .positive(),
+        stock: Yup.number()
+          .transform(v => isNaN(v) ? undefined : v)
+          .notRequired()
+          .integer()
+          .positive(),
+      });
 
-    $('#createProductModal').modal('hide');
+      await schema.validate({
+        name,
+        price,
+        stock,
+      }, {
+        abortEarly: false,
+      });
 
-    clearInputs();
+      await createProduct({
+        name,
+        price: parseFloat(price),
+        stock: parseInt(stock) || undefined,
+      });
+
+      $('#createProductModal').modal('hide');
+
+      clearInputs();
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = getValidationErrors(err);
+
+        setValidationErrors(validationErrors as FormInputs);
+      } else {
+        toast.error('Invalid form data');
+      }
+    }
   }
 
   function clearInputs(): void {
