@@ -22,7 +22,9 @@ export const ProductsPage: React.FC = () => {
   }, []);
 
   const getFiltersCount = useCallback((): number => {
-    return Object.keys(filters).length;
+    return Object.keys(filters).filter(key => {
+      return !['page', 'limit'].includes(key);
+    }).length;
   }, [filters]);
 
   return (
