@@ -9,9 +9,11 @@ import { CreateProductModal } from './components/createProductModal';
 import { FilterProductsModal } from './components/filterProductsModal';
 import { ProductContext } from '../../context/product';
 import { UploadProductsCsvModal } from './components/uploadProductsCsvModal';
+import { PaginationContext } from '../../context/pagination';
 
 export const ProductsPage: React.FC = () => {
   const { filters } = useContext(ProductContext);
+  const { pagination } = useContext(PaginationContext);
 
   const handleCreateProduct = useCallback(() => {
     $('#createProductModal').modal('show');
@@ -27,12 +29,19 @@ export const ProductsPage: React.FC = () => {
     }).length;
   }, [filters]);
 
+  const getTotalProductsCount = useCallback((): number => {
+    return pagination.total || 0;
+  }, [pagination]);
+
   return (
     <>
     <Header />
     <main className="container">
       <div className="d-flex align-items-center justify-content-between mb-2">
-        <h4 className="mb-0">Products List</h4>
+        <h4 className="mb-0">
+          Products List
+          <span className="badge bg-secondary ml-2">{getTotalProductsCount()}</span>
+        </h4>
         <div className="d-flex align-items-center justify-content-center flex-wrap">
           <button
             className="btn btn-info m-1"

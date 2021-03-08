@@ -1,5 +1,9 @@
 # Stockturn
 
+An application that provides products CRUD, bulk upsert via CSV and stock timeline.
+
+> Backend in https://github.com/guizoxxv/stockturn-api
+
 ## Technology
 
 * [React](https://reactjs.org/) v17.0.1

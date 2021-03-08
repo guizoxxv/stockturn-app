@@ -79,11 +79,13 @@ export const UploadProvider: React.FC = ({ children }) => {
     try {
       await uploadCsvRequest(data);
 
+      await getUploads();
+
       toast.info('File uploaded');
     } catch (err) {
       toast.error('Fail to upload file');
     }
-  }, []);
+  }, [getUploads]);
 
   const donwnloadSample = useCallback(async (): Promise<void> => {
     try {

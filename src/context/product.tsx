@@ -73,7 +73,7 @@ export const ProductProvider: React.FC = ({ children }) => {
         prev_page_url,
         to,
         total,
-      })
+      });
     } catch (err) {
       toast.error('Fail to get products');
     }
