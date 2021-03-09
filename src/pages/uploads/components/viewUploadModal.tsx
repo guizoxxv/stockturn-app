@@ -29,6 +29,9 @@ export const ViewUploadModal: React.FC<ViewUploadModalData> = ({ upload }) => (
             <span className="font-weight-bold">Type:</span> <span>{upload.type}</span>
           </div>
           <div>
+            <span className="font-weight-bold">Status:</span> <span>{upload.status}</span>
+          </div>
+          <div>
             <span className="font-weight-bold">Creation date:</span> <span>{new Date(upload.created_at).toLocaleString()}</span>
           </div>
           <div>
