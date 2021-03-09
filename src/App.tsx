@@ -14,6 +14,7 @@ import { UploadProvider } from './context/upload';
 axios.defaults.withCredentials = true;
 axios.defaults.headers = {
   'Accept': 'application/json',
+  'Content-Type': 'application/json',
 }
 
 toast.configure({

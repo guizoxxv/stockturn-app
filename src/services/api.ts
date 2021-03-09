@@ -13,16 +13,19 @@ import { Upload } from '../shared/interfaces/upload.interface';
 import { UploadFilter } from '../shared/interfaces/uploadFilter.interface';
 import { GetUploadsResponse } from '../shared/interfaces/getUploadsResponse.interface';
 
+export async function setCookieRequest(): Promise<void> {
+  await axios.get(apiBaseUrl + '/sanctum/csrf-cookie');
+}
+
 export async function loginRequest(
   { email, password }: LoginCredentials
 ): Promise<AuthData> {
-  await axios.get(apiBaseUrl + '/sanctum/csrf-cookie');
   await axios.post(apiBaseUrl + '/login', {
     email: email.trim(),
     password: password.trim(),
   });
 
-  const userData = await getUserData();
+  const userData = await getUserDataRequest();
 
   return {
     username: userData.name,
@@ -30,7 +33,7 @@ export async function loginRequest(
   }
 }
 
-export async function getUserData(): Promise<GetUserResponse> {
+export async function getUserDataRequest(): Promise<GetUserResponse> {
   const response = await axios.get(apiBaseUrl + '/api/user');
 
   return response.data;
