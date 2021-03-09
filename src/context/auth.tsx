@@ -28,7 +28,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, [removeCookie]);
   
   useEffect(() => {
-    if (cookies['XSRF-TOKEN']) {
+    if (!logged && cookies['XSRF-TOKEN']) {
       getUserData()
         .then(res => {
           setLogged(true);
@@ -42,7 +42,6 @@ export const AuthProvider: React.FC = ({ children }) => {
 
           clearCookies();
           
-          setLogged(false);
           setAuthData({} as AuthData);
         });
     }

@@ -32,6 +32,7 @@
   "scripts": {
     "start": "HOST=local.test PORT=3000 react-scripts start",
     "build": "REACT_APP_API_BASE_URL=https://stockturn-api.guizo.dev.br react-scripts build",
+    "build:dev": "REACT_APP_API_BASE_URL=http://api.local.dev:8001 react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
