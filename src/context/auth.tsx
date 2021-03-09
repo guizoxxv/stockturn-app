@@ -18,13 +18,13 @@ export const AuthContext = createContext<AuthContextData>(
 );
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [cookies, , removeCookie] = useCookies(['XSRF-TOKEN', 'products_api_session']);
+  const [cookies, , removeCookie] = useCookies(['XSRF-TOKEN', 'stockturn_api_session']);
   const [authData, setAuthData] = useState<AuthData>({} as AuthData);
   const [logged, setLogged] = useState<boolean>(false);
 
   const clearCookies = useCallback((): void => {
     removeCookie('XSRF-TOKEN', { path: '/', domain: appDomain });
-    removeCookie('products_api_session', { path: '/', domain: appDomain });
+    removeCookie('stockturn_api_session', { path: '/', domain: appDomain });
   }, [removeCookie]);
   
   useEffect(() => {

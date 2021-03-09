@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/auth';
+import $ from 'jquery';
 
 export const LogoutModal: React.FC = () => {
   const { logout } = useContext(AuthContext);
 
   const handleConfirm = async () => {
+    $('#logoutModal').modal('hide');
+    
     await logout();
   }
 
