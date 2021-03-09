@@ -18,8 +18,8 @@ export async function loginRequest(
 ): Promise<AuthData> {
   await axios.get(apiBaseUrl + '/sanctum/csrf-cookie');
   await axios.post(apiBaseUrl + '/login', {
-    email,
-    password,
+    email: email.trim(),
+    password: password.trim(),
   });
 
   const userData = await getUserData();
