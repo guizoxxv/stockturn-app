@@ -1,6 +1,6 @@
 
 import React, { createContext, useCallback, useEffect, useState } from 'react';
-import { getUserDataRequest, loginRequest, logoutRequest, setCookieRequest } from '../services/api';
+import { getUserDataRequest, loginRequest, logoutRequest } from '../services/api';
 import { LoginCredentials } from '../shared/interfaces/loginCredentials.interface';
 import { AuthData } from '../shared/interfaces/authData.interface';
 import { useCookies } from 'react-cookie';
@@ -28,28 +28,21 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, [removeCookie]);
   
   useEffect(() => {
-    if (cookies['XSRF-TOKEN']) {
-      if (!logged) {
-        getUserDataRequest()
-          .then(res => {
-            setLogged(true);
-            setAuthData({
-              username: res.name,
-              email: res.email,
-            })
+    if (!logged && cookies['XSRF-TOKEN']) {
+      getUserDataRequest()
+        .then(res => {
+          setLogged(true);
+          setAuthData({
+            username: res.name,
+            email: res.email,
           })
-          .catch(err => {
-            console.log(`Fail to get logged user. Clearing cookies.`);
-
-            clearCookies();
-
-            setAuthData({} as AuthData);
-          });
-      }
-    } else {
-      setCookieRequest()
+        })
         .catch(err => {
-          console.log(`Fail to set cookie.`);
+          console.log(`Fail to get logged user. Clearing cookies.`);
+
+          clearCookies();
+
+          setAuthData({} as AuthData);
         });
     }
   });

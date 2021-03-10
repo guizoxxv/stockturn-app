@@ -13,14 +13,11 @@ import { Upload } from '../shared/interfaces/upload.interface';
 import { UploadFilter } from '../shared/interfaces/uploadFilter.interface';
 import { GetUploadsResponse } from '../shared/interfaces/getUploadsResponse.interface';
 
-export async function setCookieRequest(): Promise<void> {
-  await axios.get(apiBaseUrl + '/sanctum/csrf-cookie');
-}
-
 export async function loginRequest(
   { email, password }: LoginCredentials
 ): Promise<AuthData> {
-  await axios.post(apiBaseUrl + '/login', {
+  await axios.get(`${apiBaseUrl}/sanctum/csrf-cookie`);
+  await axios.post(`${apiBaseUrl}/login`, {
     email: email.trim(),
     password: password.trim(),
   });
@@ -34,13 +31,13 @@ export async function loginRequest(
 }
 
 export async function getUserDataRequest(): Promise<GetUserResponse> {
-  const response = await axios.get(apiBaseUrl + '/api/user');
+  const response = await axios.get(`${apiBaseUrl}/api/user`);
 
   return response.data;
 }
 
 export async function logoutRequest(): Promise<void> {
-  await axios.post(apiBaseUrl + '/logout');
+  await axios.post(`${apiBaseUrl}/logout`);
 }
 
 export async function getProductsRequest(
@@ -48,7 +45,7 @@ export async function getProductsRequest(
 ): Promise<GetProductsResponse> {
   const queryString = filters ? '?' + qs.stringify(filters) : '';
 
-  const response = await axios.get<GetProductsResponse>(apiBaseUrl + `/api/products${queryString}`);
+  const response = await axios.get<GetProductsResponse>(`${apiBaseUrl}/api/products${queryString}`);
 
   return response.data;
 }
@@ -56,13 +53,13 @@ export async function getProductsRequest(
 export async function deleteProductRequest(
   productId: number,
 ): Promise<void> {
-  await axios.delete<void>(apiBaseUrl + `/api/products/${productId}`);
+  await axios.delete<void>(`${apiBaseUrl}/api/products/${productId}`);
 }
 
 export async function createProductRequest(
   product: ProductCreate,
 ): Promise<Product> {
-  const response = await axios.post<Product>(apiBaseUrl + '/api/products', product);
+  const response = await axios.post<Product>(`${apiBaseUrl}/api/products`, product);
 
   return response.data;
 }
@@ -70,7 +67,7 @@ export async function createProductRequest(
 export async function editProductRequest(
   product: ProductUpdate,
 ): Promise<Product> {
-  const response = await axios.put<Product>(apiBaseUrl + `/api/products/${product.id}`, product);
+  const response = await axios.put<Product>(`${apiBaseUrl}/api/products/${product.id}`, product);
 
   return response.data;
 }
@@ -80,7 +77,7 @@ export async function getUploadsRequest(
 ): Promise<GetUploadsResponse> {
   const queryString = filters ? '?' + qs.stringify(filters) : '';
 
-  const response = await axios.get<GetUploadsResponse>(apiBaseUrl + `/api/uploads${queryString}`);
+  const response = await axios.get<GetUploadsResponse>(`${apiBaseUrl}/api/uploads${queryString}`);
 
   return response.data;
 }
@@ -88,7 +85,7 @@ export async function getUploadsRequest(
 export async function uploadCsvRequest(
   data: FormData,
 ): Promise<Upload> {
-  const response = await axios.post(apiBaseUrl + '/api/uploads', data);
+  const response = await axios.post(`${apiBaseUrl}/api/uploads`, data);
 
   return response.data;
 }
